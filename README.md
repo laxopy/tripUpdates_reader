@@ -14,10 +14,8 @@ Before running this project, make sure you have Python 3.6+ installed on your ma
 To clone the repository, use the following command:
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/laxopy/tripUpdates_reader.git
 ```
-
-Replace `your-username` and `your-repo-name` with the appropriate GitHub username and repository name.
 
 ### 2. Navigate to the project directory
 
@@ -42,7 +40,7 @@ source venv/bin/activate
 
 #### On Windows:
 ```bash
-.env\Scriptsctivate
+.\venv\Scripts\activate
 ```
 
 ### 5. Install the required dependencies
@@ -53,15 +51,16 @@ With the virtual environment activated, install the required dependencies from t
 pip install -r requirements.txt
 ```
 
-### 6. Add your API key
+### 6. Add your API key and your API url
 
 Create a `.env` file in the root directory of the project and add your API key to it:
 
 ```bash
 API_KEY=your_api_key_here
+API_URL=your_api_url_here
 ```
 
-Make sure to replace `your_api_key_here` with the actual API key.
+Make sure to replace `your_api_key_here` 'your_api_url_here' with the actual values of your API key and API url.
 
 ## Running the Project
 
