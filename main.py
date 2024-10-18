@@ -29,7 +29,10 @@ if response.status_code == 200:
     # Convert from Protobuf to dictionary
     feed_dict = MessageToDict(feed)
 
-    # Show response in JSON format
-    print(json.dumps(feed_dict, indent=2))
+    # Write response to .json
+    with open("gtfs_tripupdates.json", "w") as json_file:
+        json.dump(feed_dict, json_file, indent=2)
+
+    print("Response successfully written to gtfs_tripupdates.json")
 else:
     print(f"Error: {response.status_code}")
