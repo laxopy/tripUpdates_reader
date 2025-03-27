@@ -8,31 +8,36 @@ import os
 # Load environment variables from .env
 load_dotenv()
 
-# Obtain api key and api url
+# Obtain API key and API URL
 api_key = os.getenv("API_KEY")
 api_url = os.getenv("API_URL")
 
-# Headers with authentication token
-headers = {"Authorization": f"{api_key}"}
+# Initialize headers dictionary
+headers = {}
 
-# GET request using headers
-response = requests.get(api_url, headers=headers)
+# If API key is present, add Authorization header
+if api_key:
+    headers["Authorization"] = api_key
 
-# Verify response
-if response.status_code == 200:
-    # Create the object FeedMessage
-    feed = gtfs_realtime_pb2.FeedMessage()
+try:
+    # Make GET request with or without headers
+    response = requests.get(api_url, headers=headers)
 
-    # Parse the protobuf response
-    feed.ParseFromString(response.content)
+    if response.status_code == 200:
+        # Parse GTFS-RT protobuf message
+        feed = gtfs_realtime_pb2.FeedMessage()
+        feed.ParseFromString(response.content)
 
-    # Convert from Protobuf to dictionary
-    feed_dict = MessageToDict(feed)
+        # Convert protobuf to dictionary
+        feed_dict = MessageToDict(feed)
 
-    # Write response to .json
-    with open("gtfs_tripupdates.json", "w") as json_file:
-        json.dump(feed_dict, json_file, indent=2)
+        # Save to JSON file
+        with open("gtfs_rt.json", "w") as json_file:
+            json.dump(feed_dict, json_file, indent=2)
 
-    print("Response successfully written to gtfs_tripupdates.json")
-else:
-    print(f"Error: {response.status_code}")
+        print("Response successfully written to gtfs_rt.json")
+    else:
+        print(f"Error: Received status code {response.status_code}")
+
+except requests.exceptions.RequestException as e:
+    print(f"Request failed: {e}")

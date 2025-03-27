@@ -1,77 +1,59 @@
+# 🚍 GTFS-Realtime Downloader
 
-# GTFS-RT Trip Updates Reader
+This script fetches a GTFS-Realtime feed (TripUpdates, VehiclePositions, etc.), parses it from Protocol Buffers (protobuf) to a human-readable JSON format, and saves it locally.
 
-This project retrieves and decodes GTFS-RT trip updates from an API using Python. The response is in Protocol Buffers format and is converted to human-readable JSON.
+## 🧰 Requirements
 
-## Prerequisites
+- Python 3.7+
+- `requests`
+- `protobuf`
+- `google-transit`
+- `python-dotenv`
 
-Before running this project, make sure you have Python 3.6+ installed on your machine.
-
-## Setup
-
-### 1. Clone the repository
-
-To clone the repository, use the following command:
-
-```bash
-git clone https://github.com/laxopy/tripUpdates_reader.git
-```
-
-### 2. Navigate to the project directory
-
-```bash
-cd your-repo-name
-```
-
-### 3. Create a virtual environment
-
-It is recommended to create a virtual environment to manage dependencies:
-
-```bash
-python3 -m venv venv
-```
-
-### 4. Activate the virtual environment
-
-#### On macOS or Linux:
-```bash
-source venv/bin/activate
-```
-
-#### On Windows:
-```bash
-.\venv\Scripts\activate
-```
-
-### 5. Install the required dependencies
-
-With the virtual environment activated, install the required dependencies from the `requirements.txt` file:
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 6. Add your API key and your API url
-
-Create a `.env` file in the root directory of the project and add your API key to it:
+You’ll also need the `gtfs-realtime-bindings` package, which includes the `.proto` definitions:
 
 ```bash
-API_KEY=your_api_key_here
-API_URL=your_api_url_here
+pip install gtfs-realtime-bindings
 ```
 
-Make sure to replace `your_api_key_here` 'your_api_url_here' with the actual values of your API key and API url.
+## ⚙️ Setup
 
-## Running the Project
+Create a `.env` file in the root directory with the following:
 
-To run the project, execute the `main.py` file:
+```
+API_URL=https://your.gtfs.rt.feed/endpoint
+API_KEY=your_api_key_here  # Optional
+```
+
+If the API does **not require authentication**, you can omit the `API_KEY` or leave it blank.
+
+## ▶️ Running the Script
 
 ```bash
-python main.py
+python gtfs_fetcher.py
 ```
 
-This will retrieve the GTFS-RT trip updates, decode the Protocol Buffers format, and output the result as human-readable JSON.
+The script will:
 
-## License
+1. Fetch the GTFS-RT feed from the provided `API_URL`.
+2. Add an `Authorization` header only if `API_KEY` is set.
+3. Parse the Protocol Buffers data.
+4. Convert it to a human-readable JSON format.
+5. Save it as `gtfs_rt.json`.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## ✅ Output
+
+- A file named `gtfs_rt.json` containing a decoded version of the GTFS-Realtime feed.
+
+## 🛠 Troubleshooting
+
+If the response status code is not `200`, check:
+- Your `API_URL` is valid
+- Your API key (if required)
+- That your GTFS feed is online and publicly accessible
